@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const chalk = require("chalk");
+
 const auth = require("../middlewares/auth");
 const Cart = require("../models/Cart");
 const Product = require("../models/Product");
@@ -28,7 +30,7 @@ router.get("/:cartName", auth, async (req, res) => {
 
     res.status(200).json(cart);
   } catch (error) {
-    console.error("Error fetching cart:", error);
+    console.error(chalk.white.bgRed.bold(`Error fetching cart: ${error}`));
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -102,7 +104,9 @@ router.post("/add", auth, validate(addItem), async (req, res) => {
       cart: populatedCart,
     });
   } catch (error) {
-    console.error("Error adding item to cart:", error);
+    console.error(
+      chalk.white.bgRed.bold(`Error adding item to cart: ${error}`)
+    );
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -125,7 +129,9 @@ router.post("/remove", auth, async (req, res) => {
       cart: populatedCart,
     });
   } catch (error) {
-    console.error("Error removing item from cart:", error);
+    console.error(
+      chalk.white.bgRed.bold(`Error removing item from cart: ${error}`)
+    );
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -176,7 +182,9 @@ router.put("/update-quantity", auth, async (req, res) => {
       cart: populatedCart,
     });
   } catch (error) {
-    console.error("Error updating item quantity:", error);
+    console.error(
+      chalk.white.bgRed.bold(`Error updating item quantity in cart: ${error}`)
+    );
     res.status(500).json({ message: "Internal server error" });
   }
 });

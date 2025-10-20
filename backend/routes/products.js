@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const chalk = require("chalk");
+
 const product = require("../models/Product");
 const auth = require("../middlewares/auth");
 const adminOnly = require("../middlewares/adminOnly");
@@ -76,7 +78,7 @@ router.get("/semantic", async (req, res) => {
 
     res.json({ query: q, count: results.length, results });
   } catch (err) {
-    console.error("Semantic Search Error:", err);
+    console.error(chalk.white.bgRed.bold(" Semantic Search Error: "), err);
     res.status(500).json({ message: "Search failed" });
   }
 });
@@ -113,7 +115,7 @@ router.post(
 
       res.status(201).json(savedProduct);
     } catch (err) {
-      console.error(err);
+      console.error(chalk.white.bgRed.bold(" Create Product Error: "), err);
       res.status(500).json({ message: err.message });
     }
   }
@@ -168,7 +170,7 @@ router.put(
       if (updatedProduct) await indexProduct(updatedProduct);
       res.json(updatedProduct);
     } catch (err) {
-      console.error(err);
+      console.error(chalk.white.bgRed.bold(" Update Product Error: "), err);
       res.status(500).json({ message: err.message });
     }
   }
@@ -193,7 +195,7 @@ router.delete("/:id", auth, adminOnly, async (req, res) => {
     await index.deleteOne(p._id.toString());
     res.json({ message: "Product deleted" });
   } catch (err) {
-    console.error(err);
+    console.error(chalk.white.bgRed.bold(" Delete Product Error: "), err);
     res.status(500).json({ message: err.message });
   }
 });

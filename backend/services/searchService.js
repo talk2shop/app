@@ -1,5 +1,6 @@
 const { Pinecone } = require("@pinecone-database/pinecone");
 const { GoogleGenAI } = require("@google/genai");
+const chalk = require("chalk");
 require("dotenv").config();
 
 const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
@@ -18,7 +19,9 @@ async function ensureIndex() {
   const existing = indexes.indexes.find((i) => i.name === PINECONE_INDEX_NAME);
 
   if (!existing) {
-    console.log(`⚡ Creating Pinecone index: ${PINECONE_INDEX_NAME}...`);
+    console.log(
+      chalk.yellow.bold(`Creating Pinecone index: ${PINECONE_INDEX_NAME}`)
+    );
     await pc.createIndex({
       name: PINECONE_INDEX_NAME,
       dimension: 3072,
@@ -35,16 +38,18 @@ async function ensureIndex() {
       const desc = await pc.describeIndex(PINECONE_INDEX_NAME);
       if (desc.status?.ready) ready = true;
       else {
-        console.log("Waiting for index to be ready...");
+        console.log(chalk.yellow("Waiting for index to be ready..."));
         await new Promise((res) => setTimeout(res, 5000));
       }
     }
-    console.log(`Pinecone index ${PINECONE_INDEX_NAME} created!`);
+    console.log(chalk.green(`Pinecone index ${PINECONE_INDEX_NAME} created!`));
   } else {
     const desc = await pc.describeIndex(PINECONE_INDEX_NAME);
     if (desc.spec?.serverless) {
       console.log(
-        `Pinecone index ${PINECONE_INDEX_NAME} already exists and is serverless`
+        chalk.yellow(
+          `Pinecone index ${PINECONE_INDEX_NAME} already exists and is serverless`
+        )
       );
     } else {
       throw new Error(

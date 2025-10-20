@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const chalk = require("chalk");
+
 const Product = require("../models/Product");
 const { semanticSearch } = require("../services/searchService.js");
 
@@ -38,7 +40,7 @@ router.get("/", async (req, res) => {
     }
     return res.json([]); // no matches
   } catch (error) {
-    console.log("Error with semantic search: ", error);
+    console.log(chalk.white.bgRed.bold(" Semantic search error: "), error);
 
     // fallback to MongoDB text search
     const results = await Product.find(

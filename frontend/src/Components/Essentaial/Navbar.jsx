@@ -60,7 +60,7 @@ export default function Navbar({ handleProfile, isLoggedIn, handleLogin, handleL
 
     return (
         <nav className="bg-stone-900 text-white px-6 py-4 flex items-center justify-between shadow-md relative z-50">
-            <div className="text-2xl font-normal">Talk2Shope</div>
+            <div className="text-2xl font-normal">Talk2Shop</div>
 
             {/* Desktop Menu */}
             <ul className="hidden md:flex space-x-8 items-center">
